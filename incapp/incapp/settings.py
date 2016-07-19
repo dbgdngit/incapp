@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'incapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'incapp.sqlite3'),
+        'NAME': '/home/dave/incapp.sqlite3',
     }
 }
 
