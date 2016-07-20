@@ -56,16 +56,16 @@ class INCIDENT(models.Model):
     incident_severity = models.ForeignKey("INC_SEVERITY", on_delete=models.CASCADE)
     incident_response_actions = models.ManyToManyField("INC_RESPONSE")
     incident_recovery_time = models.IntegerField(null=True)
-    incident_detail = models.TextField
+    incident_detail = models.TextField(blank=True)
     incident_remedial_actions = models.ManyToManyField("INC_REMEDIAL")
     linked_risk_ref = models.CharField(max_length=30)
     incident_root_cause = models.ForeignKey("INC_ROOT_CAUSE", on_delete=models.CASCADE)
 
-def __unicode__(self):
+    def __unicode__(self):
         return unicode(self.incident_summary_headline)
 
-class MyModelForm(forms.ModelForm ):
-    incident_detail = forms.CharField(widget=forms.Textarea)
+#class MyModelForm(forms.ModelForm ):
+ #   incident_detail = forms.CharField(widget=forms.Textarea)
 
 class INC_REMEDIAL(models.Model):
     description = models.CharField(max_length=50)
@@ -77,7 +77,13 @@ class INC_REMEDIAL(models.Model):
         return self.description 
     
 class INCIDENTSADMIN(admin.ModelAdmin):
-    form = MyModelForm     
+#    def formfield_for_dbfield(self, db_field, **kwargs):
+#        formfield = super(INCIDENTSADMIN, self).formfield_for_dbfield(db_field, **kwargs)
+ #       if db_field.name == 'incident_detail':
+ #           formfield.widget = forms.Textarea(attrs=formfield.widget.attrs)
+ #       return formfield
+
+#    form = MyModelForm     
     ordering = ('date_reported','incref')
     list_display = ('date_reported','incref','incident_summary_headline','incident_severity','incident_root_cause')
 
