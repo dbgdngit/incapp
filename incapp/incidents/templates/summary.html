@@ -1,0 +1,17 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+
+{% if recent_incident_list %}
+<div style="overflow-x:auto;">
+<a href='../incidents/'>Back to Main Menu</a>
+    <table class='center'>
+        <tr><th>ID</th><th>Date Reported</th><th>Severity</th><th>Summary</th><th>Root Cause</th></tr>    
+{% for INCIDENT in recent_incident_list %}
+        <tr><td>{{ INCIDENT.incref }}</td><td>{{ INCIDENT.date_reported }}</td><td>{{ INCIDENT.incident_severity }}</td><td>{{ INCIDENT.incident_summary_headline }}</td><td>{{ INCIDENT.incident_root_cause }}</td></tr>
+    {% endfor %}
+    </table>
+</div>
+{% else %}
+    <p>No incidents are available.</p>
+{% endif %}

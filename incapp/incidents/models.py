@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib import admin
+from django import forms
 
 # Create your models here.
     
@@ -12,7 +13,7 @@ class INC_REPORTED_METHOD(models.Model):
         return unicode(self.methodlabel)
 
 class INC_TYPE(models.Model):
-    inctypelabel = models.CharField(max_length=30,default='')
+    inctypelabel = models.CharField(max_length=40,default='')
 
     def __unicode__(self):
         return unicode(self.inctypelabel)
@@ -24,7 +25,7 @@ class INC_IMPACT(models.Model):
         return unicode(self.impactlabel)
 
 class INC_SEVERITY(models.Model):
-    description = models.CharField(max_length=50)
+    description = models.CharField(max_length=90)
     value = models.IntegerField(default='1')
 
     def __unicode__(self):
@@ -62,6 +63,9 @@ class INCIDENT(models.Model):
 def __unicode__(self):
         return unicode(self.incident_summary_headline)
 
+class MyModelForm(forms.ModelForm ):
+    incident_detail = forms.CharField(widget=forms.Textarea)
+
 class INC_REMEDIAL(models.Model):
     description = models.CharField(max_length=50)
     action_owner = models.CharField(max_length=30)
@@ -71,9 +75,10 @@ class INC_REMEDIAL(models.Model):
     def __unicode__(self):
         return self.description 
     
-class INCIDENTSADMIN(admin.ModelAdmin):     
+class INCIDENTSADMIN(admin.ModelAdmin):
+    form = MyModelForm     
     ordering = ('date_reported','incref')
-    list_display = ('date_reported','incref','incident_summary_headline','incident_severity')
+    list_display = ('date_reported','incref','incident_summary_headline','incident_severity','incident_root_cause')
 
 class INC_REMEDIALADMIN(admin.ModelAdmin):
     ordering = ('date_raised','status')
