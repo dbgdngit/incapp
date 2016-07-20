@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib import admin
 from django import forms
+from django.http import HttpResponse
 
 # Create your models here.
     
@@ -79,6 +80,35 @@ class INCIDENTSADMIN(admin.ModelAdmin):
     form = MyModelForm     
     ordering = ('date_reported','incref')
     list_display = ('date_reported','incref','incident_summary_headline','incident_severity','incident_root_cause')
+
+
+    def export_csv(modeladmin, request, queryset):
+        import csv
+        from django.utils.encoding import smart_str
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=mymodel.csv'
+        writer = csv.writer(response, csv.excel)
+        response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+        writer.writerow([
+           smart_str(u"incref"),
+           smart_str(u"date_reported"),
+           smart_str(u"incident_summary_headline"),
+           smart_str(u"incident_severity"),
+           smart_str(u"incident_root_cause"),
+        ])
+        for obj in queryset:
+            writer.writerow([
+               smart_str(obj.incref),
+               smart_str(obj.date_reported),
+               smart_str(obj.incident_summary_headline),
+               smart_str(obj.incident_severity),
+               smart_str(obj.incident_root_cause),
+
+        ])
+        return response
+    export_csv.short_description = u"Export CSV"
+
+    actions = [export_csv]
 
 class INC_REMEDIALADMIN(admin.ModelAdmin):
     ordering = ('date_raised','status')
