@@ -64,9 +64,6 @@ class INCIDENT(models.Model):
     def __unicode__(self):
         return unicode(self.incident_summary_headline)
 
-#class MyModelForm(forms.ModelForm ):
- #   incident_detail = forms.CharField(widget=forms.Textarea)
-
 class INC_REMEDIAL(models.Model):
     description = models.CharField(max_length=50)
     action_owner = models.CharField(max_length=30)
@@ -77,13 +74,6 @@ class INC_REMEDIAL(models.Model):
         return self.description 
     
 class INCIDENTSADMIN(admin.ModelAdmin):
-#    def formfield_for_dbfield(self, db_field, **kwargs):
-#        formfield = super(INCIDENTSADMIN, self).formfield_for_dbfield(db_field, **kwargs)
- #       if db_field.name == 'incident_detail':
- #           formfield.widget = forms.Textarea(attrs=formfield.widget.attrs)
- #       return formfield
-
-#    form = MyModelForm     
     ordering = ('date_reported','incref')
     list_display = ('date_reported','incref','incident_summary_headline','incident_severity','incident_root_cause')
 
@@ -115,6 +105,13 @@ class INCIDENTSADMIN(admin.ModelAdmin):
     export_csv.short_description = u"Export CSV"
 
     actions = [export_csv]
+
+    def duplicate_record(modeladmin, request, queryset):
+        for object in queryset:
+            object.id = None
+            object.save()
+    duplicate_record.short_description = "Duplicate selected record"
+    actions = [duplicate_record]
 
 class INC_REMEDIALADMIN(admin.ModelAdmin):
     ordering = ('date_raised','status')
