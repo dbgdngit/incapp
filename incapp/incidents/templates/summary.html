@@ -6,9 +6,11 @@
 <div style="overflow-x:auto;">
 <a href='../incidents/'>Back to Main Menu</a>
     <table class='center'>
-        <tr><th>ID</th><th>Date Reported</th><th>Severity</th><th>Summary</th><th>Root Cause</th></tr>    
+        <tr><th>ID</th><th>Date Reported</th><th>Severity</th><th>Summary</th><th>Root Cause</th><th>Actions</th></tr>    
 {% for INCIDENT in recent_incident_list %}
-        <tr><td>{{ INCIDENT.incref }}</td><td>{{ INCIDENT.date_reported }}</td><td>{{ INCIDENT.incident_severity }}</td><td>{{ INCIDENT.incident_summary_headline }}</td><td>{{ INCIDENT.incident_root_cause }}</td></tr>
+        <tr><td>{{ INCIDENT.incref }}</td><td>{{ INCIDENT.date_reported }}</td><td>{{ INCIDENT.incident_severity }}</td><td>{{ INCIDENT.incident_summary_headline }}</td><td>{{ INCIDENT.incident_root_cause }}</td><td><ol class="ialist">
+{% for description in INCIDENT.incident_remedial_actions.all %}<li>{{ description }}{% endfor %}</ol>
+</td></tr>
     {% endfor %}
     </table>
 </div>

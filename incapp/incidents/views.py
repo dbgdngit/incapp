@@ -9,7 +9,7 @@ def index(request):
     return HttpResponse(template.render(request))
 
 def recent(request):
-    recent_incident_list = INCIDENT.objects.all()
+    recent_incident_list = INCIDENT.objects.order_by('-incref')
     template = loader.get_template('summary.html')
     context = {
         'recent_incident_list': recent_incident_list,
