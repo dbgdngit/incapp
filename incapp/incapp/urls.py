@@ -18,6 +18,7 @@ from django.contrib import admin
 from incidents import views
 
 urlpatterns = [
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^$', views.index, name='index'),
     url(r'^recent/', views.recent, name='recent'),
     url(r'^incidents/', include('incidents.urls')),
