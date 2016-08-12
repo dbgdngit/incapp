@@ -11,10 +11,10 @@ from django.shortcuts import redirect
 from .models import INCIDENT
 
 def index(request):
-    if not request.user.is_authenticated():
-        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+    u = request.user.username
     template = loader.get_template('index.html')
-    return HttpResponse(template.render(request))
+    context = {'u': request.user,}
+    return HttpResponse(template.render(context,request))
 
 def recent(request):
     if not request.user.is_authenticated():
